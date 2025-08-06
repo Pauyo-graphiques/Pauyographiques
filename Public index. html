@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Pauyographiques – Plateforme créative, boutique en ligne et média indépendant. Un espace de diffusion en direct, d’expression artistique, et de commerce digital." />
+    <meta name="keywords" content="Pauyographiques, média, boutique en ligne, live streaming, design, créativité, art numérique, innovation, Pauyo" />
+    <meta name="author" content="Pauyo Nephtalie" />
+    <meta property="og:title" content="Pauyographiques – Créativité, Streaming & Boutique" />
+    <meta property="og:description" content="Explorez Pauyographiques : média moderne, boutique stylée et studio de diffusion en direct. Une marque. Un média. Un business." />
+    <meta property="og:image" content="https://pauyo.one/logo.png" />
+    <meta property="og:url" content="https://pauyo.one" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>Pauyographiques – Une marque. Un média. Un business.</title>
+  </head>
+  <body class="antialiased text-gray-900">
+    <noscript>Vous devez activer JavaScript pour utiliser ce site.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
