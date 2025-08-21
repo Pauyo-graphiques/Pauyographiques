@@ -1,0 +1,182 @@
+Src-components-splashScreen.jsx
+import React, { useEffect, useState } from "react";
+
+export default function SplashScreen({ onFinish }) {
+  const [fadeOut, setFadeOut] = useState(false);
+
+  useEffect(() => {
+    // Durée avant disparition
+    const timer = setTimeout(() => {
+      setFadeOut(true);
+      setTimeout(onFinish, 800); // délai du fade-out
+    }, 2000); // 2 sec visible
+
+    return () => clearTimeout(timer);
+  }, [onFinish]);
+
+  return (
+    <div
+      className={`fixed inset-0 flex items-center justify-center bg-black transition-opacity duration-800 z-50 ${
+        fadeOut ? "opacity-0" : "opacity-100"
+      }`}
+    >
+      <img
+        src="/logo512.png"
+        alt="Pauyographiques"
+        className="w-40 h-40 animate-splash"
+      />
+    </div>
+  );
+}
+Introsplash.jsx
+import IntroSplash from "./components/IntroSplash";
+function App(){ 
+  return (<>
+    <IntroSplash logo="/logo512.png" />
+    <MainApp />
+  </>);
+}
+
+css
+@keyframes splashZoom {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-splash {
+  animation: splashZoom 1.5s ease-in-out forwards;
+}
+
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+Src-App.jsx
+import React, { useState } from "react";
+import SplashScreen from "./components/SplashScreen";
+
+function App() {
+  const [loading, setLoading] = useState(true);
+
+  if (loading) {
+    return <SplashScreen onFinish={() => setLoading(false)} />;
+  }
+
+  return (
+    <div className="fade-in-up">
+      {/* Ici ton contenu habituel */}
+      <header className="p-4 text-center text-white bg-black">
+        <h1 className="text-4xl font-bold">Pauyographiques</h1>
+        <p className="text-lg">Professionnel. Impactant. Unique.</p>
+      </header>
+      <main>
+        {/* Ton site */}
+      </main>
+    </div>
+  );
+}
+
+export default App;
+
+Intro Splash
+import React, { useState } from "react";
+import SplashScreen from "./components/SplashScreen";
+
+function App() {
+  const [loading, setLoading] = useState(true);
+
+  if (loading) {
+    return <SplashScreen onFinish={() => setLoading(false)} />;
+  }
+
+  return (
+    <div className="fade-in-up">
+      {/* Ici ton contenu habituel */}
+      <header className="p-4 text-center text-white bg-black">
+        <h1 className="text-4xl font-bold">Pauyographiques</h1>
+        <p className="text-lg">Professionnel. Impactant. Unique.</p>
+      </header>
+      <main>
+        {/* Ton site */}
+      </main>
+    </div>
+  );
+}
+
+export default App; Hero.jsximport React from "react";
+
+const Hero = () => {
+  return (
+    <section className="w-full min-h-screen bg-black text-white flex flex-col justify-center items-center text-center px-4">
+      <h1 className="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">
+        Pauyographiques
+      </h1>
+      <p className="text-lg md:text-2xl max-w-2xl mb-6">
+        Une plateforme créative, indépendante et stylée. Découvrez nos émissions, notre boutique et notre univers artistique.
+      </p>
+      <a
+        href="https://pauyo.one/shop"
+        className="bg-white text-black font-semibold py-3 px-6 rounded-full hover:bg-gray-200 transition"
+      >
+        Explorer la boutique
+      </a>
+    </section>
+  );
+};
+
+export default Hero;
+Header.jsxLatest commx
+
+
+import React from "react";import { Link } from "react-router-dom";
+
+const Header = () => {
+  return (
+    <header className="bg-white shadow-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        {/* Logo */}
+        <Link to="/" className="text-2xl font-bold text-gray-900">
+          Pauyographiques
+        </Link>
+
+        {/* Navigation */}
+        <nav className="hidden md:flex space-x-6 text-sm font-medium">
+          <Link to="/" className="hover:text-blue-600 transition">Accueil</Link>
+          <Link to="/shop" className="hover:text-blue-600 transition">Boutique</Link>
+          <Link to="/gallery" className="hover:text-blue-600 transition">Galerie</Link>
+          <Link to="/blog" className="hover:text-blue-600 transition">Articles</Link>
+          <Link to="/about" className="hover:text-blue-600 transition">À propos</Link>
+          <Link to="/contact" className="hover:text-blue-600 transition">Contact</Link>
+        </nav>
+
+        {/* Placeholder for future elements (e.g., user icon, cart) */}
+        <div className="flex items-center space-x-4">
+          <Link to="/live" className="text-sm font-semibold hover:text-red-600 transition">
+            Live
+          </Link>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
