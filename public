@@ -1,0 +1,92 @@
+public/index.html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pauyographiques – Média, Boutique & Streaming</title>
+  <meta name="description" content="Pauyographiques – Plateforme indépendante mêlant création artistique, diffusion en direct et boutique unique." />
+  <meta name="author" content="Pauyo Nephtalie" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#111111" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Pauyographiques – Média, Boutique & Streaming Créatif" />
+  <meta property="og:description" content="Créations, lives et boutique créative. Pauyographiques, l'univers de Pauyo." />
+  <meta property="og:image" content="/cover.jpg" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/logo192.png" />
+
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Fonts Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- CSS global -->
+  <link rel="stylesheet" href="/index.css" />
+</head>
+<body class="bg-white text-black antialiased flex items-center justify-center min-h-screen p-6">
+  <main class="card fade-in max-w-xl w-full text-center p-6 rounded-2xl shadow-lg">
+    <!-- Logo -->
+    <img src="/logo192.png" alt="Logo Pauyographiques" class="mx-auto mb-4 w-32 h-auto" />
+
+    <!-- Titre et slogan -->
+    <h1 class="text-2xl font-bold mb-2">Bienvenue sur Pauyographiques</h1>
+    <p class="text-gray-700 mb-4">Plateforme créative – boutique, média & streaming en direct.</p>
+
+    <!-- Cover / mockup -->
+    <img src="/cover.jpg" alt="Mockup Pauyographiques" class="cover mx-auto rounded-xl shadow-md mb-4" />
+
+    <!-- Boutons -->
+    <div class="buttons flex flex-wrap gap-3 justify-center">
+      <a class="btn bg-black text-white px-4 py-2 rounded-lg font-semibold" href="/assets/Pauyographiques_App.apk" download>📥 Télécharger l'app</a>
+      <a class="btn bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold" href="https://www.facebook.com/pauyographiques" target="_blank" rel="noopener noreferrer">📘 Facebook</a>
+      <a class="btn bg-green-600 text-white px-4 py-2 rounded-lg font-semibold" href="/live">🎥 Live</a>
+    </div>
+  </main>
+
+  <!-- Service Worker PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('Service Worker enregistré — scope:', reg.scope))
+          .catch(err => console.warn('Erreur d\'enregistrement SW:', err));
+      });
+    }
+  </script>
+</body>
+</html>
+favicon.ico
+echo "AAABAAEAEBAAAAAAAABoAwAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A" | base64 --decode > public/favicon.ico
+logo192.png
+echo "iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAALUlEQVR4nO3BMQEAAAgDINc/9K3hAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABwMwEGvgABj8N9WQAAAABJRU5ErkJggg==" | base64 --decode > public/logo192.png
+logo512.png
+echo "iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAANUlEQVR4nO3BMQEAAAgDINc/9K3hAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcDMAAQCnGdgnAAAAAElFTkSuQmCC" | base64 --decode > public/logo512.png
+cover.jpg
+echo "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEhUQEhMVFRUXGRgYGBgYGBgYGBgYGBgYGBgYGBgYHSggGBolHRgYITEhJSkrLi4uFx8zODMsNygtLisBCgoKDg0OGxAQGy0lICUwLS8tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAKIBNwMBIgACEQEDEQH/xAAYAAADAQEAAAAAAAAAAAAAAAAAAQIDBf/EAB4QAAICAgMBAQAAAAAAAAAAAAECAxEhAAQSIjFR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAQP/xAAWEQEBAQAAAAAAAAAAAAAAAAABACH/2gAMAwEAAhEDEQA/AO4A8goYgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/2Q==" | base64 --decode > public/cover.jpg
+site.webmanifest
+{
+  "name": "Pauyographiques",
+  "short_name": "Pauyo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    { "src": "/logo192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/logo512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.ico", "sizes": "32x32", "type": "image/x-icon" }
+  ],
+  "screenshots": [
+    { "src": "/cover.jpg", "sizes": "1280x720", "type": "image/jpeg" }
+  ]
+}
+robots.txt
+User-agent: *
+Allow: /
+Sitemap: https://pauyo.one/sitemap.xml
