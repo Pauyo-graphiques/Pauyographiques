@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
+  import './styles/global.css';  // chemin unique
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -38,6 +39,39 @@ html, body {
   font-family: 'Inter', sans-serif;
   background-color: #000;
   color: #fff;
+}
+src/styles/global.css
+/* src/styles/index.css */
+
+/* Tailwind base */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Styles globaux ===== */
+body {
+  @apply font-sans bg-white text-gray-900 m-0 p-0;
+}
+
+/* ===== Boutons ===== */
+.button {
+  @apply px-4 py-2 rounded-md font-semibold transition duration-300;
+}
+.button-primary {
+  @apply bg-black text-white hover:bg-gray-800;
+}
+.button-secondary {
+  @apply bg-white text-black border border-black hover:bg-gray-100;
+}
+
+/* ===== Titres ===== */
+h1, h2, h3 {
+  @apply font-bold mb-4;
+}
+
+/* ===== Sections ===== */
+.section {
+  @apply py-12 px-6;
 }
 
 src/styles/splash.css
