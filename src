@@ -1,0 +1,137 @@
+src/main.jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+src/App.jsx
+import { useState } from "react";
+import SplashScreen from "./components/SplashScreen";
+import HomePage from "./pages/HomePage";
+
+export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  return showSplash ? (
+    <SplashScreen onFinish={() => setShowSplash(false)} />
+  ) : (
+    <HomePage />
+  );
+}
+
+src/index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./styles/splash.css";
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #000;
+  color: #fff;
+}
+
+src/styles/splash.css
+@keyframes splashZoom {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.splash-animate {
+  animation: splashZoom 3s ease-in-out forwards;
+}
+
+.splash-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #000;
+  color: #fff;
+}
+
+.splash-logo {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
+}
+
+.splash-slogan {
+  font-size: 1.2rem;
+  text-align: center;
+  max-width: 300px;
+}
+
+src/components/SplashScreen.jsx
+import { useEffect } from "react";
+import "../styles/splash.css";
+
+export default function SplashScreen({ onFinish }) {
+  useEffect(() => {
+    const timer = setTimeout(onFinish, 3000);
+    return () => clearTimeout(timer);
+  }, [onFinish]);
+
+  return (
+    <div className="splash-container">
+      <img
+        src="/logo512.png"
+        alt="Logo Pauyographiques"
+        className="splash-logo splash-animate"
+      />
+      <h1 className="splash-slogan">
+        Là où l’art de choquer en direct devient un pouvoir.
+      </h1>
+    </div>
+  );
+}
+
+src/pages/HomePage.jsx
+export default function HomePage() {
+  return (
+    <main className="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-black text-center px-6">
+      <img
+        src="/logo512.png"
+        alt="Pauyographiques Logo"
+        className="w-32 h-32 mb-6"
+      />
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+        ✨ Pauyographique.
+      </h1>
+      <p className="mt-4 text-lg text-gray-700 dark:text-gray-300 max-w-xl">
+        Là où l’art de choquer en direct devient un pouvoir.<br />
+        En scène. En style. En force.
+      </p>
+
+      <section className="mt-10 space-y-6 w-full max-w-3xl">
+        <div className="p-6 rounded-2xl shadow bg-gray-50 dark:bg-gray-900">
+          <h2 className="text-xl font-semibold">Nos Programmes</h2>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
+            Trop classe pour suivre. Trop vrai pour plaire à tout le monde.
+          </p>
+        </div>
+        <div className="p-6 rounded-2xl shadow bg-gray-50 dark:bg-gray-900">
+          <h2 className="text-xl font-semibold">Notre Vision</h2>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
+            Ici, chaque diffusion est une signature rare, portée par une présence totale.
+          </p>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+src/assets/
+src/assets/
+└─ logo512.png   (ou tout autre asset que tu veux importer via React)
