@@ -40,7 +40,7 @@ html, body {
   background-color: #000;
   color: #fff;
 }
-src/styles/global.css
+
 /* src/styles/index.css */
 
 /* Tailwind base */
@@ -130,24 +130,113 @@ export default function SplashScreen({ onFinish }) {
     </div>
   );
 }
+// src/components/Header.jsx
+import React from "react";
 
-src/pages/HomePage.jsx
+export default function Header() {
+  return (
+    <header className="w-full flex items-center justify-between py-4 px-6 bg-white dark:bg-black shadow-md fixed top-0 left-0 z-50">
+      {/* Logo */}
+      <img
+        src="/logo192.png"
+        alt="Pauyographiques Logo"
+        className="w-12 h-12"
+      />
+
+      {/* Navigation */}
+      <nav className="flex gap-6 items-center">
+        <a href="/" className="text-gray-900 dark:text-gray-100 font-semibold hover:underline">
+          Accueil
+        </a>
+        <a href="/boutique" className="text-gray-900 dark:text-gray-100 font-semibold hover:underline">
+          Boutique
+        </a>
+        <a href="/live" className="text-gray-900 dark:text-gray-100 font-semibold hover:underline">
+          Live
+        </a>
+        <a href="/contact" className="text-gray-900 dark:text-gray-100 font-semibold hover:underline">
+          Contact
+        </a>
+      </nav>
+    </header>
+  );
+}
+
+// src/components/Hero.jsx
+import React from "react";
+
+export default function Hero() {
+  return (
+    <section className="w-full flex flex-col items-center justify-center mt-20 px-6 text-center">
+      <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+        Bienvenue sur Pauyographiques
+      </h1>
+      <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mb-6">
+        Plateforme créative – boutique, média & streaming en direct.
+      </p>
+      <div className="flex gap-4 flex-wrap justify-center">
+        <a href="/live" className="button button-primary">
+          🎥 Regarder le Live
+        </a>
+        <a href="/boutique" className="button button-secondary">
+          🛒 Découvrir la Boutique
+        </a>
+      </div>
+      {/* Image / Cover */}
+      <img
+        src="/cover.jpg"
+        alt="Mockup Pauyographiques"
+        className="mt-8 w-full max-w-xl rounded-2xl shadow-lg"
+      />
+    </section>
+  );
+}
+
+ // src/pages/HomePage.jsx
+import React from "react";
+import Header from "../components/Header";
+import Hero from "../components/Hero";
+import liveIcon from "../assets/icones/live-icon.svg";
+import boutiqueIcon from "../assets/icones/boutique-icon.svg";
+
 export default function HomePage() {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-black text-center px-6">
+    <main className="flex flex-col items-center justify-start min-h-screen bg-white dark:bg-black text-center px-6">
+      {/* Header */}
+      <Header />
+
+      {/* Hero Section */}
+      <Hero />
+
+      {/* Logo */}
       <img
         src="/logo512.png"
         alt="Pauyographiques Logo"
-        className="w-32 h-32 mb-6"
+        className="w-32 h-32 mb-6 mt-10"
       />
+
+      {/* Slogan */}
       <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
         ✨ Pauyographique.
       </h1>
       <p className="mt-4 text-lg text-gray-700 dark:text-gray-300 max-w-xl">
-        Là où l’art de choquer en direct devient un pouvoir.<br />
+        Là où l’art de choquer en direct devient un pouvoir.  
         En scène. En style. En force.
       </p>
 
+      {/* Icônes Live et Boutique */}
+      <div className="flex gap-6 mt-6 mb-10 justify-center">
+        <div className="flex flex-col items-center">
+          <img src={liveIcon} alt="Live" className="w-10 h-10 mb-2" />
+          <span className="text-gray-800 dark:text-gray-200 font-semibold">Live</span>
+        </div>
+        <div className="flex flex-col items-center">
+          <img src={boutiqueIcon} alt="Boutique" className="w-10 h-10 mb-2" />
+          <span className="text-gray-800 dark:text-gray-200 font-semibold">Boutique</span>
+        </div>
+      </div>
+
+      {/* Sections */}
       <section className="mt-10 space-y-6 w-full max-w-3xl">
         <div className="p-6 rounded-2xl shadow bg-gray-50 dark:bg-gray-900">
           <h2 className="text-xl font-semibold">Nos Programmes</h2>
@@ -167,5 +256,7 @@ export default function HomePage() {
 }
 
 src/assets/
-src/assets/
 └─ logo512.png   (ou tout autre asset que tu veux importer via React)
+import liveIcon from "../assets/icones/live-icon.svg";
+<img src={liveIcon} alt="Live" />
+
