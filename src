@@ -3,7 +3,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-  import './styles/global.css';  // chemin unique
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -25,8 +24,7 @@ export default function App() {
     <HomePage />
   );
 }
-
-src/index.css
+index.css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -40,40 +38,6 @@ html, body {
   background-color: #000;
   color: #fff;
 }
-
-/* src/styles/index.css */
-
-/* Tailwind base */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* ===== Styles globaux ===== */
-body {
-  @apply font-sans bg-white text-gray-900 m-0 p-0;
-}
-
-/* ===== Boutons ===== */
-.button {
-  @apply px-4 py-2 rounded-md font-semibold transition duration-300;
-}
-.button-primary {
-  @apply bg-black text-white hover:bg-gray-800;
-}
-.button-secondary {
-  @apply bg-white text-black border border-black hover:bg-gray-100;
-}
-
-/* ===== Titres ===== */
-h1, h2, h3 {
-  @apply font-bold mb-4;
-}
-
-/* ===== Sections ===== */
-.section {
-  @apply py-12 px-6;
-}
-
 src/styles/splash.css
 @keyframes splashZoom {
   0% { transform: scale(0.8); opacity: 0; }
@@ -81,31 +45,14 @@ src/styles/splash.css
   100% { transform: scale(1); opacity: 1; }
 }
 
-.splash-animate {
-  animation: splashZoom 3s ease-in-out forwards;
-}
+.splash-animate { animation: splashZoom 3s ease-in-out forwards; }
 
 .splash-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #000;
-  color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100vh; background-color: #000; color: #fff; text-align: center; padding: 0 1rem;
 }
-
-.splash-logo {
-  width: 150px;
-  height: 150px;
-  margin-bottom: 20px;
-}
-
-.splash-slogan {
-  font-size: 1.2rem;
-  text-align: center;
-  max-width: 300px;
-}
+.splash-logo { width: 150px; height: 150px; margin-bottom: 20px; }
+.splash-slogan { font-size: 1.2rem; max-width: 320px; line-height: 1.35; }
 
 src/components/SplashScreen.jsx
 import { useEffect } from "react";
@@ -254,9 +201,10 @@ export default function HomePage() {
     </main>
   );
 }
+src/assets/icones/
+src/assets/icones/live-icon.svg
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 7h18v10H3z"/><path fill="#fff" d="M10 9l6 3-6 3z"/></svg>
+src/assets/icones/boutique-icon.svg
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16l-1.5 12h-13z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
 
-src/assets/
-└─ logo512.png   (ou tout autre asset que tu veux importer via React)
-import liveIcon from "../assets/icones/live-icon.svg";
-<img src={liveIcon} alt="Live" />
 
