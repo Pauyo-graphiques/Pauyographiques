@@ -61,6 +61,45 @@ public/index.html
   </script>
 </body>
 </html>
+// public/sw.js
+self.addEventListener("install", (event) => {
+  console.log("Service Worker installé");
+  event.waitUntil(
+    caches.open("pauyographiques-cache-v1").then((cache) => {
+      return cache.addAll([
+        "/",
+        "/index.html",
+        "/favicon.ico",
+        "/logo192.png",
+        "/logo512.png",
+        "/cover.jpg",
+        "/manifest.json",
+      ]);
+    })
+  );
+});
+
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
+});
+
+self.addEventListener("activate", (event) => {
+  console.log("Service Worker activé");
+  event.waitUntil(
+    caches.keys().then((cacheNames) =>
+      Promise.all(
+        cacheNames
+          .filter((name) => name !== "pauyographiques-cache-v1")
+          .map((name) => caches.delete(name))
+      )
+    )
+  );
+});
+
 favicon.ico
 echo "AAABAAEAEBAAAAAAAABoAwAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A" | base64 --decode > public/favicon.ico
 logo192.png
