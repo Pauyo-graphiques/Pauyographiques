@@ -70,7 +70,8 @@ self.addEventListener("install", (event) => {
         "/logo192.png",
         "/logo512.png",
         "/cover.jpg",
-        "/manifest.json",
+        "/site.webmanifest",
+       "/assets/Pauyographiques_App.apk
       ]);
     })
   );
