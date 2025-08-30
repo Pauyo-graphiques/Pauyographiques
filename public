@@ -25,9 +25,6 @@ public/index.html
   <!-- Fonts Google -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-
-  <!-- CSS global -->
-  <link rel="stylesheet" href="/index.css" />
 </head>
 <body class="bg-white text-black antialiased flex items-center justify-center min-h-screen p-6">
   <main class="card fade-in max-w-xl w-full text-center p-6 rounded-2xl shadow-lg">
@@ -129,3 +126,6 @@ robots.txt
 User-agent: *
 Allow: /
 Sitemap: https://pauyo.one/sitemap.xml
+public/
+└─ assets/
+   └─ Pauyographiques_App.apk
