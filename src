@@ -10,10 +10,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </React.StrictMode>
 );
 
-src/App.jsx
-import { useState } from "react";
+// src/App.jsx
+import React, { useState } from "react";
 import SplashScreen from "./components/SplashScreen";
-import HomePage from "./pages/HomePage";
+import MainAppContent from "./components/MainAppContent";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -21,9 +21,213 @@ export default function App() {
   return showSplash ? (
     <SplashScreen onFinish={() => setShowSplash(false)} />
   ) : (
-    <HomePage />
+    <MainAppContent />
   );
 }
+
+// src/components/MainAppContent.jsx
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Boutique from "./Boutique";
+import PlayerLive from "./PlayerLive";
+import Blog from "./Blog";
+import ContactForm from "./ContactForm";
+import Header from "./Header";
+import Footer from "./Footer";
+
+export default function MainAppContent() {
+  const [callNumber] = useState("+1234567890"); // Numéro click-to-call
+
+  const handleCallClick = () => {
+    toast.info(`Appel en cours vers ${callNumber}`);
+    window.location.href = `tel:${callNumber}`;
+  };
+
+  return (
+    <Router>
+      <div className="flex flex-col min-h-screen">
+        {/* Header */}
+        <Header />
+
+        {/* Main content */}
+        <main className="flex-1 p-4">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <section className="mb-8">
+                    <h1 className="text-4xl font-bold mb-4">Bienvenue sur Pauyographiques</h1>
+                    <p>Découvrez nos émissions, produits et articles exclusifs.</p>
+                  </section>
+
+                  {/* Player vidéo / Studio live */}
+                  <section className="mb-8">
+                    <h2 className="text-2xl font-semibold mb-2">Studio Live</h2>
+                    <PlayerLive />
+                  </section>
+
+                  {/* Boutique */}
+                  <section className="mb-8">
+                    <h2 className="text-2xl font-semibold mb-2">Boutique</h2>
+                    <Boutique />
+                  </section>
+
+                  {/* Blog */}
+                  <section className="mb-8">
+                    <h2 className="text-2xl font-semibold mb-2">Articles récents</h2>
+                    <Blog />
+                  </section>
+
+                  {/* Contact / Click-to-call */}
+                  <section className="mb-8">
+                    <h2 className="text-2xl font-semibold mb-2">Contactez-nous</h2>
+                    <button
+                      onClick={handleCallClick}
+                      className="bg-blue-600 text-white px-4 py-2 rounded mr-4 hover:bg-blue-700"
+                    >
+                      Appeler maintenant
+                    </button>
+                    <ContactForm />
+                  </section>
+                </>
+              }
+            />
+            <Route path="/boutique" element={<Boutique />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/contact" element={<ContactForm />} />
+          </Routes>
+        </main>
+
+        {/* Footer */}
+        <Footer />
+
+        {/* Notifications */}
+        <ToastContainer position="bottom-right" autoClose={3000} />
+      </div>
+    </Router>
+  );
+}
+// src/components/PlayerLive.jsx
+import React from "react";
+
+export default function PlayerLive() {
+  return (
+    <div className="w-full h-64 bg-black flex items-center justify-center text-white">
+      {/* Remplace ce bloc par ton lecteur RTMP/WebRTC */}
+      <p>Lecteur vidéo live (studio intégré)</p>
+    </div>
+  );
+}
+// src/components/Boutique.jsx
+import React from "react";
+
+const products = [
+  { id: 1, name: "Produit 1", price: 20 },
+  { id: 2, name: "Produit 2", price: 35 },
+];
+
+export default function Boutique() {
+  const handleBuy = (product) => {
+    alert(`Paiement simulé pour ${product.name} - ${product.price}€`);
+    // Ici tu peux intégrer Stripe Checkout
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {products.map((p) => (
+        <div key={p.id} className="border p-4 rounded shadow">
+          <h3 className="text-xl font-semibold">{p.name}</h3>
+          <p className="mb-2">{p.price} €</p>
+          <button
+            onClick={() => handleBuy(p)}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          >
+            Acheter
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+}
+// src/components/Blog.jsx
+import React from "react";
+
+const articles = [
+  { id: 1, title: "Article 1", excerpt: "Résumé de l'article 1..." },
+  { id: 2, title: "Article 2", excerpt: "Résumé de l'article 2..." },
+];
+
+export default function Blog() {
+  return (
+    <div className="space-y-4">
+      {articles.map((a) => (
+        <div key={a.id} className="border p-4 rounded shadow">
+          <h3 className="text-xl font-semibold">{a.title}</h3>
+          <p>{a.excerpt}</p>
+          <a href="#" className="text-blue-600 hover:underline">
+            Lire plus
+          </a>
+        </div>
+      ))}
+    </div>
+  );
+}
+// src/components/ContactForm.jsx
+import React from "react";
+import { useForm } from "react-hook-form";
+
+export default function ContactForm() {
+  const { register, handleSubmit, reset } = useForm();
+
+  const onSubmit = (data) => {
+    alert(`Message envoyé: ${JSON.stringify(data)}`);
+    reset();
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md">
+      <input
+        {...register("name")}
+        placeholder="Nom"
+        className="w-full mb-2 p-2 border rounded"
+        required
+      />
+      <input
+        {...register("email")}
+        type="email"
+        placeholder="Email"
+        className="w-full mb-2 p-2 border rounded"
+        required
+      />
+      <textarea
+        {...register("message")}
+        placeholder="Message"
+        className="w-full mb-2 p-2 border rounded"
+        required
+      />
+      <button
+        type="submit"
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        Envoyer
+      </button>
+    </form>
+  );
+}
+// src/components/Footer.jsx
+import React from "react";
+
+export default function Footer() {
+  return (
+    <footer className="bg-gray-800 text-white p-4 text-center">
+      <p>&copy; {new Date().getFullYear()} Pauyographiques. Tous droits réservés.</p>
+    </footer>
+  );
+}
+
 index.css
 @tailwind base;
 @tailwind components;
@@ -145,24 +349,23 @@ import Header from "../components/Header";
 import Hero from "../components/Hero";
 import liveIcon from "../assets/icones/live-icon.svg";
 import boutiqueIcon from "../assets/icones/boutique-icon.svg";
+import PlayerLive from "../components/PlayerLive";
+import Boutique from "../components/Boutique";
+import Blog from "../components/Blog";
+import ContactForm from "../components/ContactForm";
 
 export default function HomePage() {
   return (
     <main className="flex flex-col items-center justify-start min-h-screen bg-white dark:bg-black text-center px-6">
-      {/* Header */}
       <Header />
-
-      {/* Hero Section */}
       <Hero />
 
-      {/* Logo */}
       <img
         src="/logo512.png"
         alt="Pauyographiques Logo"
         className="w-32 h-32 mb-6 mt-10"
       />
 
-      {/* Slogan */}
       <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
         ✨ Pauyographique.
       </h1>
@@ -171,7 +374,6 @@ export default function HomePage() {
         En scène. En style. En force.
       </p>
 
-      {/* Icônes Live et Boutique */}
       <div className="flex gap-6 mt-6 mb-10 justify-center">
         <div className="flex flex-col items-center">
           <img src={liveIcon} alt="Live" className="w-10 h-10 mb-2" />
@@ -183,7 +385,13 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Sections */}
+      {/* Sections supplémentaires intégrées */}
+      <PlayerLive />
+      <Boutique />
+      <Blog />
+      <ContactForm />
+
+      {/* Sections existantes */}
       <section className="mt-10 space-y-6 w-full max-w-3xl">
         <div className="p-6 rounded-2xl shadow bg-gray-50 dark:bg-gray-900">
           <h2 className="text-xl font-semibold">Nos Programmes</h2>
@@ -201,6 +409,8 @@ export default function HomePage() {
     </main>
   );
 }
+src/assets/logos/
+
 src/assets/icones/
 src/assets/icones/live-icon.svg
 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 7h18v10H3z"/><path fill="#fff" d="M10 9l6 3-6 3z"/></svg>
