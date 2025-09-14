@@ -1,14 +1,43 @@
 src/main.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import { RouterProvider } from "react-router-dom";
+import router from "./router/routes";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
+
+src/router/routes.jsx
+import React from "react";
+import { createBrowserRouter } from "react-router-dom";
+import App from "../App";
+
+// Pages
+import Accueil from "../pages/Accueil";
+import Boutique from "../pages/Boutique";
+import Blog from "../pages/Blog";
+import Contact from "../pages/Contact";
+import Live from "../pages/Live";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      { path: "/", element: <Accueil /> },
+      { path: "/boutique", element: <Boutique /> },
+      { path: "/blog", element: <Blog /> },
+      { path: "/contact", element: <Contact /> },
+      { path: "/live", element: <Live /> },
+    ],
+  },
+]);
+
+export default router;
 
 // src/App.jsx
 import React, { useState } from "react";
@@ -433,3 +462,4 @@ src/assets/icones/live-icon.svg
 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 7h18v10H3z"/><path fill="#fff" d="M10 9l6 3-6 3z"/></svg>
 src/assets/icones/boutique-icon.svg
 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16l-1.5 12h-13z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+
