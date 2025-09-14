@@ -1,62 +1,279 @@
 src/main.jsx
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider } from "react-router-dom";
-import router from "./router/routes";
+
+// Styles globaux
 import "./index.css";
 
+// Composant principal
+import App from "./App";
+
+// Contexte global
+import { AppProvider } from "./context/AppContext";
+
+// Fonction pour initialiser le Dark Mode selon la préférence utilisateur
+const initDarkMode = () => {
+  const userTheme = localStorage.getItem("theme");
+  if (userTheme === "dark") {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+};
+
+const Root = () => {
+  useEffect(() => {
+    initDarkMode();
+  }, []);
+
+  return (
+    <AppProvider>
+      <App />
+    </AppProvider>
+  );
+};
+
+// Montage de l'application
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Root />
   </React.StrictMode>
 );
 
-src/router/routes.jsx
-import React from "react";
-import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
+/* index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-// Pages
-import Accueil from "../pages/Accueil";
-import Boutique from "../pages/Boutique";
-import Blog from "../pages/Blog";
-import Contact from "../pages/Contact";
-import Live from "../pages/Live";
+/* Import du splash screen personnalisé */
+@import "./styles/splash.css";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-      { path: "/", element: <Accueil /> },
-      { path: "/boutique", element: <Boutique /> },
-      { path: "/blog", element: <Blog /> },
-      { path: "/contact", element: <Contact /> },
-      { path: "/live", element: <Live /> },
-    ],
-  },
-]);
+/* Styles globaux */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #000; /* fond sombre par défaut */
+  color: #fff;            /* texte clair par défaut */
+  scroll-behavior: smooth; /* scroll fluide pour ancrages et navigation */
+}
 
-export default router;
+/* Dark mode géré par Tailwind */
+.dark {
+  --tw-bg-opacity: 1;
+  background-color: #000; /* fond sombre pour dark mode */
+  color: #fff;
+}
+
+/* Balises globales */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Reset Tailwind pour certaines balises */
+ul, ol {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Classes utilitaires personnalisées si besoin */
+.bg-dark {
+  background-color: #000;
+}
+
+.text-light {
+  color: #fff;
+}
 
 // src/App.jsx
-import React, { useState } from "react";
-import SplashScreen from "./components/SplashScreen";
-import MainAppContent from "./components/MainAppContent";
-import LogoGenerator from "./components/LogoGenerator"; // <-- importer ici
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-export default function App() {
-  const [showSplash, setShowSplash] = useState(true);
+// Pages
+import Accueil from "./pages/Accueil";
+import Boutique from "./pages/Boutique";
+import Blog from "./pages/Blog";
+import ContactForm from "./pages/ContactForm";
+import APropos from "./pages/ÀPropos";
+import Manifeste from "./pages/Manifeste";
+import FAQ from "./pages/FAQ";
+import Portfolio from "./pages/Portfolio";
+import Error404 from "./pages/Error404";
+
+// Composants globaux
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
+// Composants spécifiques
+import PlayerLive from "./components/PlayerLive";
+import Commentaires from "./components/Commentaires";
+import Evaluation from "./components/Evaluation";
+import SplashScreen from "./components/SplashScreen";
+
+const App = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 3000); // Durée splash 3s
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading)
+    return <SplashScreen onFinish={() => setLoading(false)} />;
 
   return (
-    <>
-        <SplashScreen onFinish={() => setShowSplash(false)} />
-      ) : (
-        <MainAppContent />
-      )}
-    </>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Accueil />} />
+        <Route path="/boutique" element={<Boutique />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/contact" element={<ContactForm />} />
+        <Route path="/apropos" element={<APropos />} />
+        <Route path="/manifeste" element={<Manifeste />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/live" element={<PlayerLive />} />
+        <Route path="/commentaires" element={<Commentaires />} />
+        <Route path="/evaluation" element={<Evaluation />} />
+        <Route path="*" element={<Error404 />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
   );
-}
+};
+
+export default App;
+
+// src/pages/ÀPropos.jsx
+import React from "react";
+
+const APropos = () => {
+  return (
+    <section className="px-6 py-16 bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+      <div className="max-w-4xl mx-auto text-center">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4">
+          À propos de Pauyographiques
+        </h1>
+        <p className="mb-6">
+          Une plateforme moderne pour diffuser des contenus originaux, interagir et vivre des expériences uniques.
+        </p>
+        <a
+          href="#manifeste"
+          className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
+        >
+          Lire le manifeste
+        </a>
+
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+          <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+            <h2 className="font-semibold mb-2">Notre Mission</h2>
+            <p>Offrir une expérience audiovisuelle immersive et accessible à tous.</p>
+          </div>
+          <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+            <h2 className="font-semibold mb-2">Nos Valeurs</h2>
+            <ul className="list-disc pl-5">
+              <li>Innovation</li>
+              <li>Accessibilité</li>
+              <li>Communauté</li>
+              <li>Qualité</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default APropos;
+
+// src/pages/Manifeste.jsx
+import React from "react";
+
+const Manifeste = () => {
+  return (
+    <section className="max-w-4xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4">Notre Manifeste</h1>
+      <p className="mb-2">
+        Chez Pauyographiques, nous croyons en la diffusion de contenus uniques et
+        de qualité. Notre objectif est de connecter les créateurs avec leur
+        audience dans un espace dynamique et interactif.
+      </p>
+      <p>
+        Nous valorisons la créativité, l’innovation et l’excellence. Chaque
+        émission, article ou produit que nous proposons reflète notre engagement
+        envers la qualité et l’expérience utilisateur.
+      </p>
+    </section>
+  );
+};
+
+export default Manifeste;
+
+// src/pages/FAQ.jsx
+import React from "react";
+
+const FAQ = () => {
+  const questions = [
+    { q: "Comment acheter un produit ?", a: "Ajoutez-le au panier puis passez au paiement." },
+    { q: "Comment accéder aux lives ?", a: "Cliquez sur la section Live depuis le menu." },
+    { q: "Puis-je laisser un avis ?", a: "Oui, utilisez la section Évaluation sous chaque vidéo." },
+  ];
+
+  return (
+    <section className="max-w-4xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">FAQ</h1>
+      <div className="space-y-4">
+        {questions.map((item, index) => (
+          <div key={index} className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+            <h3 className="font-semibold">{item.q}</h3>
+            <p>{item.a}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default FAQ;
+
+// src/pages/Portfolio.jsx
+import React from "react";
+import VideoCard from "../components/VideoCard"; // Assurez-vous que VideoCard existe
+
+const videos = [
+  { id: 1, title: "Émission 1", thumbnail: "/assets/images/portfolio/video1.jpg" },
+  { id: 2, title: "Émission 2", thumbnail: "/assets/images/portfolio/video2.jpg" },
+];
+
+const Portfolio = () => {
+  return (
+    <section className="max-w-5xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">Portfolio</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {videos.map((video) => (
+          <VideoCard key={video.id} title={video.title} thumbnail={video.thumbnail} />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default Portfolio;
 
 // src/components/MainAppContent.jsx
 import React, { useState } from "react";
@@ -143,6 +360,285 @@ export default function MainAppContent() {
     </Router>
   );
 }
+src/components/Navbar.jsx
+import React from "react";
+import { Link } from "react-router-dom";
+
+const Navbar = () => {
+  return (
+    <nav className="bg-gray-800 text-white p-4 flex justify-between items-center">
+      <div className="font-bold text-xl">Pauyographiques</div>
+      <div className="space-x-4">
+        <Link to="/">Accueil</Link>
+        <Link to="/boutique">Boutique</Link>
+        <Link to="/blog">Blog</Link>
+        <Link to="/apropos">À Propos</Link>
+        <Link to="/faq">FAQ</Link>
+        <Link to="/portfolio">Portfolio</Link>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
+
+// src/components/Footer.jsx
+import React from "react";
+
+const Footer = () => {
+  return (
+    <footer className="bg-gray-800 text-white p-6 text-center">
+      <p>© {new Date().getFullYear()} Pauyographiques. Tous droits réservés.</p>
+      <p>
+        Suivez-nous sur
+        <a href="#" className="ml-2 text-blue-400 hover:underline">Twitter</a>,
+        <a href="#" className="ml-2 text-blue-400 hover:underline">Instagram</a>
+      </p>
+    </footer>
+  );
+};
+
+export default Footer;
+
+// src/components/Button.jsx
+import React from "react";
+
+const Button = ({ children, onClick, className = "" }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition ${className}`}
+    >
+      {children}
+    </button>
+  );
+};
+
+export default Button;
+
+// src/components/Card.jsx
+import React from "react";
+
+const Card = ({ title, description, image, children }) => {
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+      {image && <img src={image} alt={title} className="w-full h-48 object-cover" />}
+      <div className="p-4">
+        <h3 className="text-xl font-bold mb-2">{title}</h3>
+        <p className="text-gray-700 dark:text-gray-300">{description}</p>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export default Card;
+
+// src/components/Loader.jsx
+import React from "react";
+
+const Loader = () => {
+  return (
+    <div className="flex justify-center items-center h-32">
+      <div className="w-12 h-12 border-4 border-blue-600 border-dashed rounded-full animate-spin"></div>
+    </div>
+  );
+};
+
+export default Loader;
+
+// src/components/DarkModeToggle.jsx
+import React, { useState, useEffect } from "react";
+
+const DarkModeToggle = () => {
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    if (dark) document.documentElement.classList.add("dark");
+    else document.documentElement.classList.remove("dark");
+  }, [dark]);
+
+  return (
+    <button
+      onClick={() => setDark(!dark)}
+      className="px-3 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 transition"
+    >
+      {dark ? "☀️ Light" : "🌙 Dark"}
+    </button>
+  );
+};
+
+export default DarkModeToggle;
+
+// src/components/Panier.jsx
+import React, { useState } from "react";
+
+const Panier = () => {
+  const [items, setItems] = useState([]);
+
+  const addItem = (product) => setItems([...items, product]);
+  const removeItem = (index) => setItems(items.filter((_, i) => i !== index));
+
+  const total = items.reduce((acc, item) => acc + item.price, 0);
+
+  return (
+    <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-4">Panier</h2>
+      {items.length === 0 ? (
+        <p>Votre panier est vide.</p>
+      ) : (
+        <ul className="mb-4">
+          {items.map((item, index) => (
+            <li key={index} className="flex justify-between mb-2">
+              <span>{item.name}</span>
+              <button
+                className="text-red-600 hover:underline"
+                onClick={() => removeItem(index)}
+              >
+                Supprimer
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <p className="font-semibold">Total: {total.toFixed(2)} €</p>
+    </div>
+  );
+};
+
+export default Panier;
+
+// src/components/FormulaireContact.jsx
+import React, { useState } from "react";
+
+const FormulaireContact = () => {
+  const [form, setForm] = useState({ nom: "", email: "", message: "" });
+
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(`Message envoyé ! Merci ${form.nom}`);
+    setForm({ nom: "", email: "", message: "" });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="max-w-xl mx-auto p-4 space-y-4">
+      <input
+        type="text"
+        name="nom"
+        placeholder="Votre nom"
+        value={form.nom}
+        onChange={handleChange}
+        className="w-full p-2 border rounded"
+        required
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Votre email"
+        value={form.email}
+        onChange={handleChange}
+        className="w-full p-2 border rounded"
+        required
+      />
+      <textarea
+        name="message"
+        placeholder="Votre message"
+        value={form.message}
+        onChange={handleChange}
+        className="w-full p-2 border rounded"
+        required
+      />
+      <button
+        type="submit"
+        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
+      >
+        Envoyer
+      </button>
+    </form>
+  );
+};
+
+export default FormulaireContact;
+
+// src/components/FormulaireContact.jsx
+import React, { useState } from "react";
+
+const FormulaireContact = () => {
+  const [form, setForm] = useState({ nom: "", email: "", message: "" });
+
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(`Message envoyé ! Merci ${form.nom}`);
+    setForm({ nom: "", email: "", message: "" });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="max-w-xl mx-auto p-4 space-y-4">
+      <input
+        type="text"
+        name="nom"
+        placeholder="Votre nom"
+        value={form.nom}
+        onChange={handleChange}
+        className="w-full p-2 border rounded"
+        required
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="Votre email"
+        value={form.email}
+        onChange={handleChange}
+        className="w-full p-2 border rounded"
+        required
+      />
+      <textarea
+        name="message"
+        placeholder="Votre message"
+        value={form.message}
+        onChange={handleChange}
+        className="w-full p-2 border rounded"
+        required
+      />
+      <button
+        type="submit"
+        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
+      >
+        Envoyer
+      </button>
+    </form>
+  );
+};
+
+export default FormulaireContact;
+
+// src/components/VideoCard.jsx
+import React from "react";
+
+const VideoCard = ({ title, thumbnail, onClick }) => {
+  return (
+    <div
+      className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition"
+      onClick={onClick}
+    >
+      {thumbnail && (
+        <img src={thumbnail} alt={title} className="w-full h-48 object-cover" />
+      )}
+      <div className="p-4">
+        <h3 className="text-xl font-bold mb-2">{title}</h3>
+      </div>
+    </div>
+  );
+};
+
+export default VideoCard;
+
 
 // src/components/PlayerLive.jsx
 import React from "react";
@@ -155,6 +651,147 @@ export default function PlayerLive() {
     </div>
   );
 }
+// src/components/Commentaires.jsx
+import React, { useState } from "react";
+
+const Commentaires = () => {
+  const [comments, setComments] = useState([
+    { id: 1, name: "Alice", text: "Super émission !" },
+    { id: 2, name: "Bob", text: "J’adore le contenu." },
+  ]);
+  const [newComment, setNewComment] = useState("");
+
+  const handleAddComment = () => {
+    if (!newComment.trim()) return;
+    setComments([
+      ...comments,
+      { id: comments.length + 1, name: "Utilisateur", text: newComment },
+    ]);
+    setNewComment("");
+  };
+
+  return (
+    <section className="mt-8 max-w-3xl mx-auto px-4">
+      <h2 className="text-2xl font-semibold mb-4">Commentaires</h2>
+
+      {/* Liste des commentaires */}
+      <div className="space-y-3 mb-4">
+        {comments.map((c) => (
+          <div
+            key={c.id}
+            className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm"
+          >
+            <span className="font-semibold">{c.name}:</span> {c.text}
+          </div>
+        ))}
+      </div>
+
+      {/* Formulaire d’ajout */}
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="Écrire un commentaire..."
+          className="flex-1 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          onClick={handleAddComment}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
+        >
+          Envoyer
+        </button>
+      </div>
+    </section>
+  );
+};
+
+export default Commentaires;
+
+// src/components/Evaluation.jsx
+import React, { useState } from "react";
+
+const Evaluation = () => {
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
+  const [reviews, setReviews] = useState([
+    { id: 1, name: "Alice", text: "Excellent site !", stars: 5 },
+    { id: 2, name: "Bob", text: "Très pratique et clair.", stars: 4 },
+  ]);
+  const [newReview, setNewReview] = useState("");
+
+  const handleAddReview = () => {
+    if (!newReview.trim() || rating === 0) return;
+    setReviews([
+      ...reviews,
+      { id: reviews.length + 1, name: "Utilisateur", text: newReview, stars: rating },
+    ]);
+    setNewReview("");
+    setRating(0);
+  };
+
+  return (
+    <section className="mt-8 max-w-3xl mx-auto px-4">
+      <h2 className="text-2xl font-semibold mb-4">Évaluation du site</h2>
+
+      {/* Liste des avis */}
+      <div className="space-y-3 mb-4">
+        {reviews.map((r) => (
+          <div key={r.id} className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-sm">
+            <div className="flex items-center mb-1">
+              {Array(5)
+                .fill(0)
+                .map((_, i) => (
+                  <span key={i} className={i < r.stars ? "text-yellow-400" : "text-gray-400"}>
+                    ★
+                  </span>
+                ))}
+              <span className="ml-2 font-semibold">{r.name}</span>
+            </div>
+            <p>{r.text}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Formulaire d'ajout */}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-1">
+          {Array(5)
+            .fill(0)
+            .map((_, i) => (
+              <span
+                key={i}
+                className={`cursor-pointer text-2xl ${
+                  i < (hover || rating) ? "text-yellow-400" : "text-gray-400"
+                }`}
+                onMouseEnter={() => setHover(i + 1)}
+                onMouseLeave={() => setHover(0)}
+                onClick={() => setRating(i + 1)}
+              >
+                ★
+              </span>
+            ))}
+        </div>
+        <input
+          type="text"
+          value={newReview}
+          onChange={(e) => setNewReview(e.target.value)}
+          placeholder="Écrire un avis..."
+          className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          onClick={handleAddReview}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
+        >
+          Envoyer
+        </button>
+      </div>
+    </section>
+  );
+};
+
+export default Evaluation;
+
 // src/components/Boutique.jsx
 import React from "react";
 
@@ -261,46 +898,132 @@ export default function Footer() {
     </footer>
   );
 }
-index.css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-@import "./styles/splash.css";
+// src/utils/api.js
+// Gestion des appels API pour Boutique, Blog, Contact
+export const fetchProducts = async () => {
+  // Exemple d'appel API fictif
+  return [
+    { id: 1, name: "Produit 1", price: 29.99 },
+    { id: 2, name: "Produit 2", price: 49.99 },
+  ];
+};
 
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #000;
-  color: #fff;
-}
+export const sendContactMessage = async (data) => {
+  // Exemple de simulation d'envoi
+  console.log("Message envoyé :", data);
+  return { success: true };
+};
+
+// src/utils/helpers.js
+// Fonctions utilitaires générales
+
+export const formatPrice = (price) => {
+  return price.toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
+};
+
+export const truncateText = (text, maxLength) => {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength) + "...";
+};
+
+// src/context/AppContext.jsx
+import React, { createContext, useState } from "react";
+
+export const AppContext = createContext();
+
+export const AppProvider = ({ children }) => {
+  const [panier, setPanier] = useState([]);
+  const [user, setUser] = useState(null);
+  const [isLive, setIsLive] = useState(false);
+
+  const addToPanier = (product) => setPanier([...panier, product]);
+  const removeFromPanier = (index) =>
+    setPanier(panier.filter((_, i) => i !== index));
+
+  return (
+    <AppContext.Provider
+      value={{
+        panier,
+        addToPanier,
+        removeFromPanier,
+        user,
+        setUser,
+        isLive,
+        setIsLive,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
+};
+
 src/styles/splash.css
-@keyframes splashZoom {
-  0% { transform: scale(0.8); opacity: 0; }
-  50% { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
+/* Splash screen Pauyographiques */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
-
-.splash-animate { animation: splashZoom 3s ease-in-out forwards; }
 
 .splash-container {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  height: 100vh; background-color: #000; color: #fff; text-align: center; padding: 0 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  overflow: hidden;
 }
-.splash-logo { width: 150px; height: 150px; margin-bottom: 20px; }
-.splash-slogan { font-size: 1.2rem; max-width: 320px; line-height: 1.35; }
+
+.splash-logo {
+  width: 150px;
+  height: 150px;
+  background-image: url("../assets/logos/logo512.png"); /* Ton logo 512 */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: fadeInScale 1.2s ease-in-out forwards;
+}
+
+/* Texte optionnel sous le logo */
+.splash-text {
+  margin-top: 20px;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  animation: fadeInScale 1.5s ease-in-out forwards;
+}
+
+/* Masquer le splash après animation via JS */
+.splash-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
 
 // src/components/SplashScreen.jsx
 import { useEffect, useState } from "react";
 import "../styles/splash.css";
 import LogoAsset from "../assets/logos/logo512.png"; // logo dans src/assets/logos/
 
-export default function SplashScreen({ onFinish, duration = 3000 }) {
-  // On essaie d'abord le logo depuis src/assets, puis on bascule sur /public si erreur
+export default function SplashScreen({ onFinish, duration = 3000, slogan }) {
   const [logoSrc, setLogoSrc] = useState(LogoAsset);
 
-  // Préchargement (évite un clignotement)
+  // Préchargement du logo
   useEffect(() => {
     const img = new Image();
     img.src = logoSrc;
@@ -313,7 +1036,7 @@ export default function SplashScreen({ onFinish, duration = 3000 }) {
   }, [onFinish, duration]);
 
   return (
-    <div className="splash-container">
+    <div className="splash-container" role="img" aria-label="Logo Pauyographiques">
       <img
         src={logoSrc}
         alt="Logo Pauyographiques"
@@ -322,7 +1045,7 @@ export default function SplashScreen({ onFinish, duration = 3000 }) {
         onError={() => setLogoSrc("/logo512.png")} // fallback vers public/logo512.png
       />
       <h1 className="splash-slogan">
-        Là où l’art de choquer en direct devient un pouvoir.
+        {slogan || "Là où l’art de choquer en direct devient un pouvoir."}
       </h1>
     </div>
   );
@@ -462,4 +1185,5 @@ src/assets/icones/live-icon.svg
 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 7h18v10H3z"/><path fill="#fff" d="M10 9l6 3-6 3z"/></svg>
 src/assets/icones/boutique-icon.svg
 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16l-1.5 12h-13z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+
 
